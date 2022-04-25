@@ -338,3 +338,4 @@ class SearchPostByTitleView(APIView):
             value = post_per_city[i].get('count')
             response[key] = value
         return Response({'res': response}, status=status.HTTP_200_OK)
+
