@@ -76,3 +76,4 @@ class LandAndPlotPostSerializer(serializers.ModelSerializer):
         data['category'] = instance.category.title
         data['sub_category'] = instance.sub_category.title
         return data
+
