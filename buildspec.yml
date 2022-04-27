@@ -5,15 +5,14 @@ phases:
     runtime-versions:
       python: 3.6
     commands:
-      # Install dependencies needed for running tests
+      - python3 manage.py makemigrations
+      - python3 manage.py migrate
       - echo Installing dependencies
       - pip install -r requirements.txt
 
   build:
     commands:
       - echo Build started on `date`
-      - echo Running tests
-      - python3 manage.py test
 
   post_build:
     commands:
