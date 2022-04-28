@@ -91,6 +91,8 @@ class GetAllPostAdsViewSet(ModelViewSet):
         post_id = request.query_params.get('id')
         if post_id is not None:
             queryset = Post.objects.get(id=post_id)
+            queryset.viewed += 1
+            queryset.save()
             serializer = self.get_serializer(queryset)
             return Response({"response": serializer.data}, status=status.HTTP_200_OK)
         category = request.query_params.get('category')

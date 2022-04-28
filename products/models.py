@@ -51,7 +51,6 @@ class Post(models.Model):
     registered_in = models.CharField(max_length=100, null=True, blank=True)
     condition = models.CharField(max_length=10, null=True, blank=True)
     type = models.CharField(max_length=100, null=True, blank=True)
-    # features = models.CharField(max_length=100, null=True, blank=True)
     features = ArrayField(
             models.CharField(max_length=250, blank=True, null=True),
             size=50,
@@ -66,6 +65,7 @@ class Post(models.Model):
     status = models.CharField(choices=STATUS_CHOICES, max_length=50, null=True, blank=True)
     phone_number = models.CharField(max_length=100, null=True, blank=True)
     show_phone_number = models.BooleanField(default=False)
+    viewed = models.IntegerField(default=0, null=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated = models.DateTimeField(auto_now=True, null=True, blank=True)
