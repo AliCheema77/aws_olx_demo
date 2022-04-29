@@ -33,10 +33,11 @@ class ChatView(APIView):
                 chat_group = ChatGroup.objects.filter(buyer=buyer_id, seller=post_id.user, post=post_id).first()
                 if chat_group is None:
                     chat_group = ChatGroup(username=username, post_title=post_title, buyer=buyer_id,
+                                           buyer_username=buyer_id.username,
                                            seller=post_id.user, seller_image=post_id.user.image, post=post_id)
                 chat_group.last_message = serializer.validated_data['message']
                 chat_group.save()
-            chats = Chat(post=post_id, buyer=buyer_id, message=serializer.validated_data['message'],
+            chats = Chat(post=post_id, buyer=buyer_id, seller=post_id.user, message=serializer.validated_data['message'],
                          image=serializer.validated_data['image'])
             chats.save()
             return Response({'response': "message sent"}, status=status.HTTP_201_CREATED)

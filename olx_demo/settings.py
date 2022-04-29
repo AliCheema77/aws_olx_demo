@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-wbn#5+61davftn#8hs^%odsv6)!kgij5kg5m1)cg1vpbnhz(v5"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users',
     'products',
     'chat',
+    'payments',
 
     'rest_framework',
     'rest_framework.authtoken',

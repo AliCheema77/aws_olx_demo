@@ -7,6 +7,7 @@ User = get_user_model()
 
 class Chat(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='chat_post')
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seller_user', null=True, blank=True)
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='buyer_user')
     message = models.CharField(max_length=1000, null=True, blank=True)
     image = models.ImageField(upload_to='chat/', null=True, blank=True)
@@ -25,6 +26,7 @@ class ChatGroup(models.Model):
     post_title = models.CharField(max_length=250)
     last_message = models.CharField(max_length=1000)
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chat_group')
+    buyer_username = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.username
