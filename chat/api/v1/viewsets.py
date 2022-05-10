@@ -13,7 +13,7 @@ User = get_user_model()
 
 class ChatView(APIView):
     serializer_class = ChatSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, post_id=None, buyer_id=None):
         if post_id is not None and buyer_id is not None:
@@ -60,13 +60,13 @@ class ChatView(APIView):
 
 class ChatGroupView(APIView):
     serializer_class = ChatGroupSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, user_id=None):
         if user_id is not None:
-            buyer_group = ChatGroup.objects.filter(Q(buyer_id=user_id) | Q(seller_id=user_id))
-            serializer = self.serializer_class(buyer_group, many=True)
+            group = ChatGroup.objects.filter(Q(buyer_id=user_id) | Q(seller_id=user_id))
+            serializer = self.serializer_class(group, many=True)
             return Response({'response': serializer.data}, status=status.HTTP_200_OK)
-        return Response({'response': 'Buyer is id is missing.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'response': 'User id is missing.'}, status=status.HTTP_400_BAD_REQUEST)
 
 

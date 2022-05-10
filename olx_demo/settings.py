@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'corsheaders',
+    "djstripe",
 ]
 
 SITE_ID = 1
@@ -180,4 +181,17 @@ SOCIALACCOUNT_PROVIDERS = {
     },
 }
 
+
+
+STRIPE_TEST_SECRET_KEY = "sk_test_51JHW6eEgqjp42iy2NMFbK0HpcOaqgs7Y6IXnph7NhwKvXUGdLvSnxnSuq9lqYFylOB1BacacTigXNRCQi5GMM40G0096xn3EEs"
+STRIPE_TEST_PUBLISHABLE_KEY = "pk_test_51JHW6eEgqjp42iy2wWOrwWLCUot9M4UslRY9O9mCIEmexSBzFnLiU7cSjynOjVH51ozfKWRCp5MYPKJ2HD8hNWzE00XzODmyKy"
+STRIPE_LIVE_MODE = False
+DJSTRIPE_WEBHOOK_SECRET = "whsec_AfSuMrideyfZVraY1pjB4iVuTubs8tfy"  # Get it from the section in the Stripe
+
+STRIPE_API_KEY = STRIPE_TEST_SECRET_KEY
+
+# dashboard where you added the
+# webhook endpoint
+DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"  # Set to `"id"` for all new 2.4+ installations
 
