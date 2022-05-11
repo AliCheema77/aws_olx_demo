@@ -38,22 +38,19 @@ class SubscriptionCard(ListCreateAPIView):
                         "cvc": data.get("card_cvv")
                     }, )
                 try:
-                    # payment_method = stripe.PaymentMethod.create(
-                    #     type="card",
-                    #     card={"token": token.id},
-                    # )
+                    price = int(post.price/187)
                     stripe.Charge.create(
-                        amount=post.price,
+                        amount=price,
                         currency="usd",
                         source="tok_visa",
                         description="My First Test Charge (created for API docs)",
                     )
                     return Response({"response": f"Transaction of pkr {post.price} has been succeeded "}, status=status.HTTP_200_OK)
                 except stripe.error.CardError as e:
-                    print(e)
-            except:
-                print('s')
-            return Response({"response": "Please login first"}, status=status.HTTP_200_OK)
+                    return Response({"response": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+            except stripe.error.CardError as e:
+                return Response({"response": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"response": "Please login first"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
