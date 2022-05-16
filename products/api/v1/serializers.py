@@ -50,7 +50,8 @@ class CarPostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ['id', 'user', 'category', 'sub_category', 'ad_title', 'description', 'make', 'model', 'year',
                   'km_driven', 'fuel', 'registered_in', 'condition', 'image', 'price', 'location',
-                  'city', 'name', 'status', 'phone_number', 'show_phone_number', 'created', 'updated']
+                  'city', 'name', 'status', 'phone_number', 'show_phone_number', 'latitude', 'longitude', 'created',
+                  'updated']
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -68,7 +69,7 @@ class LandAndPlotPostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ['id', 'user', 'category', 'sub_category', 'ad_title', 'description', 'type', 'features', 'aria_unit',
                   'area', 'image', 'price', 'location', 'city', 'name', 'status', 'phone_number',
-                  'show_phone_number', 'created', 'updated']
+                  'show_phone_number', 'latitude', 'longitude', 'created', 'updated']
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

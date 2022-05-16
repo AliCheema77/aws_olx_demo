@@ -66,6 +66,8 @@ class Post(models.Model):
     phone_number = models.CharField(max_length=100, null=True, blank=True)
     show_phone_number = models.BooleanField(default=False)
     viewed = models.IntegerField(default=0, null=True, blank=True)
+    latitude = models.CharField(max_length=100, null=True, blank=True)
+    longitude = models.CharField(max_length=100, null=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated = models.DateTimeField(auto_now=True, null=True, blank=True)
