@@ -7,6 +7,7 @@ from products.models import Category, SubCategory, Post, PostImage
 from products.api.v1.serializers import CategorySerializer, SubCategorySerializer, PostImageSerializer,\
     CarPostSerializer, LandAndPlotPostSerializer, GetPostSerializer
 from django.db.models import Q, Count
+from olx_demo.pushers import notify_me
 
 
 def modify_input_for_multiple_files(post, image):
@@ -89,9 +90,14 @@ class GetAllPostAdsViewSet(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         post_id = request.query_params.get('id')
+        user = request.user
         if post_id is not None:
             queryset = Post.objects.get(id=post_id)
             queryset.viewed += 1
+            if user.username != "":
+                notify_me(user.username, f"Your post is views by {request.user.username}")
+            else:
+                notify_me("AnonymousUser", f"Your post is views by AnonymousUser")
             queryset.save()
             serializer = self.get_serializer(queryset)
             return Response({"response": serializer.data}, status=status.HTTP_200_OK)

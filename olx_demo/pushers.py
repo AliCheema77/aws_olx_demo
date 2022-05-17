@@ -1,7 +1,7 @@
 import pusher
 
 
-def ad_post_notification(my_channel, my_event):
+def notify_me(my_event, message):
     pusher_client = pusher.Pusher(
       app_id='1410038',
       key='f0603427583c810bef7b',
@@ -10,4 +10,4 @@ def ad_post_notification(my_channel, my_event):
       ssl=True
     )
 
-    pusher_client.trigger('my_channel', my_event, {'message': 'Your Post Is Created'})
+    pusher_client.trigger('my_channel', my_event, {'message': message})
