@@ -37,4 +37,4 @@ stripe==2.76.0
 dj-stripe==2.5.1
 forex-python==1.8
 CurrencyConverter-0.16.12
-
+pusher==3.2.0
