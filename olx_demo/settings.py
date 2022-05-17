@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'chat',
     'payments',
 
+
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
@@ -57,6 +58,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'corsheaders',
     "djstripe",
+    'django_celery_results',
+    'django_celery_beat',
 ]
 
 SITE_ID = 1
@@ -194,4 +197,18 @@ STRIPE_API_KEY = STRIPE_TEST_SECRET_KEY
 # webhook endpoint
 DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"  # Set to `"id"` for all new 2.4+ installations
+
+
+# celery settings
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+
+
+# CELERY_RESULT_BACKEND = 'django-db'
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 

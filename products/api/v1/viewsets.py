@@ -8,6 +8,7 @@ from products.api.v1.serializers import CategorySerializer, SubCategorySerialize
     CarPostSerializer, LandAndPlotPostSerializer, GetPostSerializer
 from django.db.models import Q, Count
 from olx_demo.pushers import notify_me
+from products.tasks import project_results
 
 
 def modify_input_for_multiple_files(post, image):
@@ -89,6 +90,7 @@ class GetAllPostAdsViewSet(ModelViewSet):
     http_method_names = ['get']
 
     def list(self, request, *args, **kwargs):
+        project_results()
         post_id = request.query_params.get('id')
         user = request.user
         if post_id is not None:
@@ -144,6 +146,7 @@ class CarPostViewSet(ModelViewSet):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
+            notify_me(serializer.data.get("ad_title"), "Your Ad is live")
             return Response({"response": serializer.data}, status=status.HTTP_201_CREATED)
         return Response({"response": "There some error"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -157,6 +160,7 @@ class LanAndPlotPostViewSet(ModelViewSet):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
+            notify_me(serializer.data.get("ad_title"), "Your Ad is live")
             return Response({"response": serializer.data}, status=status.HTTP_201_CREATED)
         return Response({"response": "There some error"}, status=status.HTTP_400_BAD_REQUEST)
 
