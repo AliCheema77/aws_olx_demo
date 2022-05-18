@@ -146,7 +146,13 @@ class CarPostViewSet(ModelViewSet):
         if serializer.is_valid(raise_exception=True):
             title_name = serializer.validated_data["ad_title"]
             serializer.save()
-            notify_me(title_name, "Your Ad is live")
+            message = {
+                "date": str(serializer.save().created),
+                "username": serializer.validated_data["user"].username,
+                "user_avatar": serializer.validated_data["user"].image,
+                "post_id": serializer.save().id
+            }
+            notify_me(title_name, message)
             return Response({"response": serializer.data}, status=status.HTTP_201_CREATED)
         return Response({"response": "There some error"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -161,7 +167,13 @@ class LanAndPlotPostViewSet(ModelViewSet):
         if serializer.is_valid(raise_exception=True):
             title_name = serializer.validated_data["ad_title"]
             serializer.save()
-            notify_me(title_name, "Your Ad is live")
+            message = {
+                "date": serializer.save().created,
+                "username": serializer.validated_data["user"].username,
+                "user_avatar": serializer.validated_data["user"].image,
+                "post_id": serializer.save().id
+            }
+            notify_me(title_name, message)
             return Response({"response": serializer.data}, status=status.HTTP_201_CREATED)
         return Response({"response": "There some error"}, status=status.HTTP_400_BAD_REQUEST)
 
