@@ -14,7 +14,7 @@ app.config_from_object(settings, namespace='CELERY')
 app.conf.beat_schedule = {
     'get_result': {
         'task': 'products.tasks.project_results',
-        'schedule': 86400.0,
+        'schedule': 300.0,
     }
 }
 app.autodiscover_tasks()
