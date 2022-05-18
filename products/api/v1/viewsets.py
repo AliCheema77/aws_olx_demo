@@ -144,8 +144,9 @@ class CarPostViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
+            title_name = serializer.validated_data["ad_title"]
             serializer.save()
-            notify_me(serializer.data.get("ad_title"), "Your Ad is live")
+            notify_me(title_name, "Your Ad is live")
             return Response({"response": serializer.data}, status=status.HTTP_201_CREATED)
         return Response({"response": "There some error"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -158,8 +159,9 @@ class LanAndPlotPostViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
+            title_name = serializer.validated_data["ad_title"]
             serializer.save()
-            notify_me(serializer.data.get("ad_title"), "Your Ad is live")
+            notify_me(title_name, "Your Ad is live")
             return Response({"response": serializer.data}, status=status.HTTP_201_CREATED)
         return Response({"response": "There some error"}, status=status.HTTP_400_BAD_REQUEST)
 
