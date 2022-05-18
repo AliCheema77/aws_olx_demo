@@ -8,6 +8,7 @@ from products.api.v1.serializers import CategorySerializer, SubCategorySerialize
     CarPostSerializer, LandAndPlotPostSerializer, GetPostSerializer
 from django.db.models import Q, Count
 from olx_demo.pushers import notify_me
+from datetime import datetime
 
 
 
@@ -95,10 +96,11 @@ class GetAllPostAdsViewSet(ModelViewSet):
         if post_id is not None:
             queryset = Post.objects.get(id=post_id)
             queryset.viewed += 1
+            time = datetime.now()
             if user.username != "":
-                notify_me(user.username, f"Your post is views by {request.user.username}")
+                notify_me(user.username, f"Your post is view by {request.user.username} at {str(time)}")
             else:
-                notify_me("AnonymousUser", f"Your post is views by AnonymousUser")
+                notify_me("AnonymousUser", f"Your post is view by AnonymousUser at {str(time)}")
             queryset.save()
             serializer = self.get_serializer(queryset)
             return Response({"response": serializer.data}, status=status.HTTP_200_OK)
@@ -168,7 +170,7 @@ class LanAndPlotPostViewSet(ModelViewSet):
             title_name = serializer.validated_data["ad_title"]
             serializer.save()
             message = {
-                "date": serializer.save().created,
+                "date": str(serializer.save().created),
                 "username": serializer.validated_data["user"].username,
                 "user_avatar": serializer.validated_data["user"].image,
                 "post_id": serializer.save().id
