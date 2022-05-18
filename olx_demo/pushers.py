@@ -10,4 +10,4 @@ def notify_me(my_event, message):
       ssl=True
     )
 
-    pusher_client.trigger('my_channel', "my_event", {'message': message})
+    return pusher_client.trigger('my_channel', "my_event", {'message': message})
