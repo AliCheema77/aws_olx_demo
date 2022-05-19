@@ -97,10 +97,17 @@ class GetAllPostAdsViewSet(ModelViewSet):
             queryset = Post.objects.get(id=post_id)
             queryset.viewed += 1
             time = datetime.now()
-            if user.username != "":
-                notify_me(user.username, f"{request.user.username} viewed your Ad at {str(time)}")
-            else:
-                notify_me("AnonymousUser", f"AnonymousUser viewed your Ad at {str(time)}")
+            message = {
+                "date": str(time),
+                "username": str(request.user),
+                "user_avatar": queryset.user.image,
+                "post_id": queryset.id,
+                "text": "Your post is viewed!"
+
+            }
+            if request.user.id != queryset.user.id:
+                print(request.user.id, "      ", queryset.user.id)
+                notify_me(user.username, message)
             queryset.save()
             serializer = self.get_serializer(queryset)
             return Response({"response": serializer.data}, status=status.HTTP_200_OK)
