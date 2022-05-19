@@ -27,7 +27,7 @@ def project_results():
             if difference >= 300 and post.status != "inactive":
                 post.status = "inactive"
                 post.save()
-                notify_me(post.user.username, "Your post is Inactive")
+                notify_me(post.user.username, f"{post.user.username} Your Ad Is Expired!")
                 print(post.status)
                 print("after success full operation celery run")
             print("celery task run")

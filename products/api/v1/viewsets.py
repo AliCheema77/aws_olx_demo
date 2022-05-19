@@ -98,9 +98,9 @@ class GetAllPostAdsViewSet(ModelViewSet):
             queryset.viewed += 1
             time = datetime.now()
             if user.username != "":
-                notify_me(user.username, f"Your post is view by {request.user.username} at {str(time)}")
+                notify_me(user.username, f"{request.user.username} viewed your Ad at {str(time)}")
             else:
-                notify_me("AnonymousUser", f"Your post is view by AnonymousUser at {str(time)}")
+                notify_me("AnonymousUser", f"AnonymousUser viewed your Ad at {str(time)}")
             queryset.save()
             serializer = self.get_serializer(queryset)
             return Response({"response": serializer.data}, status=status.HTTP_200_OK)
@@ -152,7 +152,8 @@ class CarPostViewSet(ModelViewSet):
                 "date": str(serializer.save().created),
                 "username": serializer.validated_data["user"].username,
                 "user_avatar": serializer.validated_data["user"].image,
-                "post_id": serializer.save().id
+                "post_id": serializer.save().id,
+                "text": "Your ad is live"
             }
             notify_me(title_name, message)
             return Response({"response": serializer.data}, status=status.HTTP_201_CREATED)
@@ -173,7 +174,8 @@ class LanAndPlotPostViewSet(ModelViewSet):
                 "date": str(serializer.save().created),
                 "username": serializer.validated_data["user"].username,
                 "user_avatar": serializer.validated_data["user"].image,
-                "post_id": serializer.save().id
+                "post_id": serializer.save().id,
+                "text": "Your ad is live"
             }
             notify_me(title_name, message)
             return Response({"response": serializer.data}, status=status.HTTP_201_CREATED)
