@@ -99,8 +99,9 @@ class GetAllPostAdsViewSet(ModelViewSet):
             time = datetime.now()
             message = {
                 "date": str(time),
+                "user_id": request.user.id,
                 "username": str(request.user),
-                "user_avatar": queryset.user.image,
+                "user_avatar": request.user.image,
                 "post_id": queryset.id,
                 "text": "Your post is viewed!"
 
