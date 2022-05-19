@@ -97,11 +97,14 @@ class GetAllPostAdsViewSet(ModelViewSet):
             queryset = Post.objects.get(id=post_id)
             queryset.viewed += 1
             time = datetime.now()
+            image = "null"
+            if request.user.username != "":
+                image = request.user.image
             message = {
                 "date": str(time),
                 "user_id": request.user.id,
                 "username": str(request.user),
-                "user_avatar": request.user.image,
+                "user_avatar": image,
                 "post_id": queryset.id,
                 "text": "Your post is viewed!"
 
