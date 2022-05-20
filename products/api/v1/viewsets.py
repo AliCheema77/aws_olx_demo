@@ -102,7 +102,7 @@ class GetAllPostAdsViewSet(ModelViewSet):
                 image = request.user.image
             message = {
                 "date": str(time),
-                "user_id": request.user.id,
+                "user_id": queryset.user.id,
                 "username": str(request.user),
                 "user_avatar": image,
                 "post_id": queryset.id,
