@@ -37,7 +37,10 @@ class GetPostSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data['user'] = instance.user.username
+        data['user'] = {
+            "username": instance.user.username,
+            "user_id": instance.user.id,
+        }
         data['category'] = instance.category.title
         data['sub_category'] = instance.sub_category.title
         return data
