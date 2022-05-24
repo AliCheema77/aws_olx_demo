@@ -379,3 +379,31 @@ class SearchPostByTitleView(APIView):
             response[key] = value
         return Response({'res': response}, status=status.HTTP_200_OK)
 
+
+class ExpiredAdView(APIView):
+    serializer = GetPostSerializer
+
+    def get(self, request):
+        res = {}
+        posts = Post.objects.all()
+        for post in posts:
+            now = datetime.strptime(str(datetime.now().replace(tzinfo=None)), "%Y-%m-%d %I:%M:%S.%f")
+            created = datetime.strptime(str(post.created.replace(tzinfo=None)), "%Y-%m-%d %I:%M:%S.%f")
+            difference = (now - created).seconds
+            if difference >= 300 and post.status != "inactive":
+                message = {
+                    "date": str(post.created),
+                    "username": post.user.username,
+                    "user_id": post.user.id,
+                    "user_avatar": post.user.image,
+                    "post_id": post.id,
+                    "text": "Your ad is expired"
+                }
+                post.status = "inactive"
+                post.save()
+                notify_me(post.user.username, message)
+                res[post.id] = message
+                print("after success full operation celery run")
+        return Response({'response': res}, status=status.HTTP_200_OK)
+
+
