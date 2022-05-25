@@ -101,10 +101,10 @@ class GetAllPostAdsViewSet(ModelViewSet):
             if request.user.username != "":
                 image = request.user.image
             message = {
-                "date": str(time),
-                "user_id": queryset.user.id,
-                "username": str(request.user),
-                "user_avatar": image,
+                "view_date": str(time),
+                "post_user_id": queryset.user.id,
+                "viewer_username": str(request.user),
+                "viewer_user_avatar": image,
                 "post_id": queryset.id,
                 "text": "Your post is viewed!"
 
@@ -428,6 +428,6 @@ class ExpiredAdView(APIView):
                                             post_id=post.id, type="expire", text="Your ad is expired")
                 notification.save()
                 notify_me(post.user.username, message)
-        notification_data = Notification.objects.filter(type="expire")[:15]
+        notification_data = Notification.objects.all()[:15]
         serializer = self.serializer_class(notification_data, many=True)
         return Response({'response': serializer.data}, status=status.HTTP_200_OK)
