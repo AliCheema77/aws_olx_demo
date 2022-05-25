@@ -387,8 +387,8 @@ class ExpiredAdView(APIView):
         res = {}
         posts = Post.objects.all()
         for post in posts:
-            now = datetime.strptime(str(datetime.now().replace(tzinfo=None)), "%Y-%m-%d %I:%M:%S.%f")
-            created = datetime.strptime(str(post.created.replace(tzinfo=None)), "%Y-%m-%d %I:%M:%S.%f")
+            now = datetime.strptime(str(datetime.now().replace(tzinfo=None)), "%Y-%m-%d %H:%M:%S.%f")
+            created = datetime.strptime(str(post.created.replace(tzinfo=None)), "%Y-%m-%d %H:%M:%S.%f")
             difference = (now - created).seconds
             if difference >= 300 and post.status != "inactive":
                 message = {
