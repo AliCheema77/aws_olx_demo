@@ -90,3 +90,33 @@ class PostImage(models.Model):
     class Meta:
         verbose_name = "Post Image"
         verbose_name_plural = "Post Images"
+
+
+class Notification(models.Model):
+    NOTIFICATION_TYPE = (
+        ('view', "View"),
+        ('expire', "Expire"),
+        ('add', "Add")
+    )
+
+    view_date = models.CharField(max_length=250, null=True, blank=True)
+    viewer_user_id = models.IntegerField(null=True, blank=True)
+    viewer_username = models.CharField(max_length=100, null=True, blank=True)
+    viewer_user_avatar = models.CharField(max_length=500, null=True, blank=True)
+    post_created_date = models.CharField(max_length=250, null=True, blank=True)
+    post_username = models.CharField(max_length=250, null=True, blank=True)
+    post_user_avatar = models.CharField(max_length=500, null=True, blank=True)
+    post_user_id = models.IntegerField(null=True, blank=True)
+    post_id = models.IntegerField(null=True, blank=True)
+    text = models.TextField(max_length=500, null=True, blank=True)
+    type = models.CharField(choices=NOTIFICATION_TYPE, max_length=10, null=True, blank=True)
+
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Notification"
+        verbose_name_plural = "Notifications"
+        ordering = ["-created"]
+
+    def __str__(self):
+        return self.post_id

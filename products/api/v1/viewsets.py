@@ -3,9 +3,9 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from products.models import Category, SubCategory, Post, PostImage
+from products.models import Category, SubCategory, Post, PostImage, Notification
 from products.api.v1.serializers import CategorySerializer, SubCategorySerializer, PostImageSerializer,\
-    CarPostSerializer, LandAndPlotPostSerializer, GetPostSerializer
+    CarPostSerializer, LandAndPlotPostSerializer, GetPostSerializer, NotificationSerializer
 from django.db.models import Q, Count
 from olx_demo.pushers import notify_me
 from datetime import datetime
@@ -112,9 +112,16 @@ class GetAllPostAdsViewSet(ModelViewSet):
             if request.user.id != queryset.user.id:
                 print(request.user.id, "      ", queryset.user.id)
                 notify_me(user.username, message)
+                notification = Notification(view_date=str(time), post_user_id=queryset.user.id,
+                                            viewer_username=str(request.user), viewer_user_avatar=image,
+                                            post_id=queryset.id, type="view", text="Your post is viewed!")
+                notification.save()
             queryset.save()
+            notification_data = Notification.objects.filter(type="view")[:15]
+            notification_serializer = NotificationSerializer(notification_data, many=True)
             serializer = self.get_serializer(queryset)
-            return Response({"response": serializer.data}, status=status.HTTP_200_OK)
+            return Response({"response": serializer.data, "notification_serializer": notification_serializer.data},
+                            status=status.HTTP_200_OK)
         category = request.query_params.get('category')
         sub_category = request.query_params.get('sub_category')
         location = request.query_params.get('location')
@@ -167,7 +174,15 @@ class CarPostViewSet(ModelViewSet):
                 "text": "Your ad is live"
             }
             notify_me(title_name, message)
-            return Response({"response": serializer.data}, status=status.HTTP_201_CREATED)
+            notification = Notification(post_created_date=str(serializer.save().created),
+                                        post_username=serializer.validated_data["user"].username,
+                                        post_user_avatar=serializer.validated_data["user"].image,
+                                        post_id=serializer.save().id, type="add", text="Your ad is live")
+            notification.save()
+            notification_data = Notification.objects.filter(type="add")[:15]
+            notification_serializer = NotificationSerializer(notification_data, many=True)
+            return Response({"response": serializer.data, "notification_response": notification_serializer.data},
+                            status=status.HTTP_201_CREATED)
         return Response({"response": "There some error"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -189,7 +204,15 @@ class LanAndPlotPostViewSet(ModelViewSet):
                 "text": "Your ad is live"
             }
             notify_me(title_name, message)
-            return Response({"response": serializer.data}, status=status.HTTP_201_CREATED)
+            notification = Notification(post_created_date=str(serializer.save().created),
+                                        post_username=serializer.validated_data["user"].username,
+                                        post_user_avatar=serializer.validated_data["user"].image,
+                                        post_id=serializer.save().id, type="add", text="Your ad is live")
+            notification.save()
+            notification_data = Notification.objects.filter(type="add")[:15]
+            notification_serializer = NotificationSerializer(notification_data, many=True)
+            return Response({"response": serializer.data, "notification_response": notification_serializer.data},
+                            status=status.HTTP_201_CREATED)
         return Response({"response": "There some error"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -381,10 +404,9 @@ class SearchPostByTitleView(APIView):
 
 
 class ExpiredAdView(APIView):
-    serializer = GetPostSerializer
+    serializer_class = NotificationSerializer
 
     def get(self, request):
-        res = {}
         posts = Post.objects.all()
         for post in posts:
             now = datetime.strptime(str(datetime.now().replace(tzinfo=None)), "%Y-%m-%d %H:%M:%S.%f")
@@ -401,9 +423,11 @@ class ExpiredAdView(APIView):
                 }
                 post.status = "inactive"
                 post.save()
+                notification = Notification(post_created_date=str(post.created), post_username=post.user.username,
+                                            post_user_id=post.user.id, post_user_avatar=post.user.image,
+                                            post_id=post.id, type="expire", text="Your ad is expired")
+                notification.save()
                 notify_me(post.user.username, message)
-                res[post.id] = message
-                print("after success full operation celery run")
-        return Response({'response': res}, status=status.HTTP_200_OK)
-
-
+        notification_data = Notification.objects.filter(type="expire")[:15]
+        serializer = self.serializer_class(notification_data, many=True)
+        return Response({'response': serializer.data}, status=status.HTTP_200_OK)

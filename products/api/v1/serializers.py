@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from products.models import Category, SubCategory, PostImage, Post
+from products.models import Category, SubCategory, PostImage, Post, Notification
 
 
 class SubCategorySerializer(serializers.ModelSerializer):
@@ -81,3 +81,9 @@ class LandAndPlotPostSerializer(serializers.ModelSerializer):
         data['sub_category'] = instance.sub_category.title
         return data
 
+
+class NotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = "__all__"
