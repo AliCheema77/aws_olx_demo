@@ -167,9 +167,9 @@ class CarPostViewSet(ModelViewSet):
             title_name = serializer.validated_data["ad_title"]
             serializer.save()
             message = {
-                "date": str(serializer.save().created),
-                "username": serializer.validated_data["user"].username,
-                "user_avatar": serializer.validated_data["user"].image,
+                "post_created_date": str(serializer.save().created),
+                "post_username": serializer.validated_data["user"].username,
+                "post_user_avatar": serializer.validated_data["user"].image,
                 "post_id": serializer.save().id,
                 "text": "Your ad is live"
             }
@@ -197,9 +197,9 @@ class LanAndPlotPostViewSet(ModelViewSet):
             title_name = serializer.validated_data["ad_title"]
             serializer.save()
             message = {
-                "date": str(serializer.save().created),
-                "username": serializer.validated_data["user"].username,
-                "user_avatar": serializer.validated_data["user"].image,
+                "post_created_date": str(serializer.save().created),
+                "post_username": serializer.validated_data["user"].username,
+                "post_user_avatar": serializer.validated_data["user"].image,
                 "post_id": serializer.save().id,
                 "text": "Your ad is live"
             }
@@ -414,10 +414,10 @@ class ExpiredAdView(APIView):
             difference = (now - created).seconds
             if difference >= 300 and post.status != "inactive":
                 message = {
-                    "date": str(post.created),
-                    "username": post.user.username,
-                    "user_id": post.user.id,
-                    "user_avatar": post.user.image,
+                    "post_created_date": str(post.created),
+                    "post_username": post.user.username,
+                    "post_user_id": post.user.id,
+                    "post_user_avatar": post.user.image,
                     "post_id": post.id,
                     "text": "Your ad is expired"
                 }
