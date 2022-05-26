@@ -119,5 +119,3 @@ class Notification(models.Model):
         verbose_name_plural = "Notifications"
         ordering = ["-created"]
 
-    def __str__(self):
-        return self.viewer_username
