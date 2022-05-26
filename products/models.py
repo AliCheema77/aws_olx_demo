@@ -120,4 +120,4 @@ class Notification(models.Model):
         ordering = ["-created"]
 
     def __str__(self):
-        return self.post_id
+        return self.viewer_username
