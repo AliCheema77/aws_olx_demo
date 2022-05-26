@@ -411,8 +411,8 @@ class ExpiredAdView(APIView):
         for post in posts:
             now = datetime.strptime(str(datetime.now().replace(tzinfo=None)), "%Y-%m-%d %H:%M:%S.%f")
             created = datetime.strptime(str(post.created.replace(tzinfo=None)), "%Y-%m-%d %H:%M:%S.%f")
-            difference = (now - created).seconds
-            if difference >= 300 and post.is_expire is False:
+            difference = (now - created).days
+            if difference >= 15 and post.is_expire is False:
                 message = {
                     "post_created_date": str(post.created),
                     "post_username": post.user.username,
