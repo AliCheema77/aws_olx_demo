@@ -412,7 +412,7 @@ class ExpiredAdView(APIView):
             now = datetime.strptime(str(datetime.now().replace(tzinfo=None)), "%Y-%m-%d %H:%M:%S.%f")
             created = datetime.strptime(str(post.created.replace(tzinfo=None)), "%Y-%m-%d %H:%M:%S.%f")
             difference = (now - created).seconds
-            if difference >= 300 and post.status != "inactive":
+            if difference >= 300 and post.is_expire is False:
                 message = {
                     "post_created_date": str(post.created),
                     "post_username": post.user.username,
@@ -421,7 +421,7 @@ class ExpiredAdView(APIView):
                     "post_id": post.id,
                     "text": "Your ad is expired"
                 }
-                post.status = "inactive"
+                post.is_expire = True
                 post.save()
                 notification = Notification(post_created_date=str(post.created), post_username=post.user.username,
                                             post_user_id=post.user.id, post_user_avatar=post.user.image,
