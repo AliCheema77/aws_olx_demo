@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
-
+import django_heroku
 from pathlib import Path
 
 
@@ -211,4 +211,6 @@ CELERY_TIMEZONE = 'Asia/Kolkata'
 # CELERY_RESULT_BACKEND = 'django-db'
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+django_heroku.settings(locals())
 
